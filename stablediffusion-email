@@ -1,0 +1,23 @@
+tell application "Mail"
+	set theFrom to "Stable Diffusion"
+	set theTos to {"", ""}
+	
+	set theSubject to "Stable Diffusion Images: Your Batch Has Arrived!"
+	set theContent to "Hi, your new batch of images has been generated. Here they are!"
+	set theSignature to "- Brian's Mail Script"
+	set theAttachments to {"/Users/Brian/Documents/software/stable-diffusion/outputs"}
+	set theDelay to 1
+	
+	set theMessage to make new outgoing message with properties {sender:theFrom, subject:theSubject, content:theContent, visible:true}
+	tell theMessage
+		repeat with theTo in theTos
+		       make new recipient at end of to recipients with properties {address:theTo}
+		end repeat
+		repeat with theAttachment in theAttachments
+		       make new attachment with properties {file name:theAttachment} at after last paragraph
+		       delay theDelay
+		end repeat
+	end tell
+	-- set message signature of theMessage to signature theSignature
+	send theMessage
+end tell
